@@ -213,7 +213,7 @@ python train_sentence_bert.py
 Tips: Use small learning rate for model convergence
 
 ## Finetune BGE
-'''
+```
  CUDA_VISIBLE_DEVICES=0 torchrun --nproc_per_node 1 -m FlagEmbedding.BGE_M3.run \
     --output_dir /home/gemai/md1/NAMNT_DA2/checkpoint/ckp_bge_round2 \
     --model_name_or_path /home/gemai/md1/NAMNT_DA2/checkpoint/ckp_bge/checkpoint-20000 \
@@ -235,10 +235,10 @@ Tips: Use small learning rate for model convergence
     --use_self_distill True \
     --save_steps 500 \
     --query_instruction_for_retrieval ""
-'''
+```
 
 ## Run Streamlit
-'''
+```
 streamlit run generate_question/test_streamlit.py
-'''
+```
 
