@@ -1,0 +1,19 @@
+CUDA_VISIBLE_DEVICES=0 python Condenser/run_pre_training_2.py   \
+    --output_dir /home/gemai/md1/NAMNT_DA2/checkpoint/ckp_pretrain/ckp_condenser_base/  \
+    --model_name_or_path /home/gemai/md1/NAMNT_DA2/checkpoint/ckp_pretrain/ckp_mlm_ver2/checkpoint-4600   \
+    --do_train   \
+    --save_steps 100   \
+    --per_device_train_batch_size 16  \
+    --gradient_accumulation_steps 4   \
+    --warmup_ratio 0.1   \
+    --learning_rate 5e-5   \
+    --num_train_epochs 50   \
+    --overwrite_output_dir   \
+    --dataloader_num_workers 8  \
+    --n_head_layers 2   \
+    --skip_from 6   \
+    --max_seq_length 256   \
+    --train_dir /home/gemai/md1/NAMNT_DA2/condenser_data/  \
+    --weight_decay 0.01 \
+    --late_mlm \
+    --fp16

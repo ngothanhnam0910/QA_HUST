@@ -1,0 +1,13 @@
+CUDA_VISIBLE_DEVICES=0 torchrun --nproc_per_node 1 \
+-m FlagEmbedding.baai_general_embedding.retromae_pretrain.run \
+--output_dir /home/gemai/md1/NAMNT_DA2/checkpoint/ckp_pretrain/bge  \
+--model_name_or_path BAAI/bge-m3 \
+--train_data ./data/data_pretrain_bge.json \
+--learning_rate 1e-5 \
+--num_train_epochs 10 \
+--per_device_train_batch_size 1 \
+--dataloader_drop_last True \
+--max_seq_length 512 \
+--logging_steps 200 \
+--save_steps 200 \
+--dataloader_num_workers 12

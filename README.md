@@ -11,7 +11,7 @@ Source code
 # Tổng quan hệ thống:
 Luồng hoạt động sẽ như trong hình vẽ
 <p align="center">
-    <img src="figs/gen_answer.jpg">
+    <img src="figs/gen_ansIr.jpg">
 </p> 
 
 # Luồng hoạt động của mô-đun truy xuất
@@ -168,9 +168,9 @@ python  run_co_pre_training.py   \
     --save_total_limit 1
 ```
 
-## Train Sentence Transformer
+## Train bi-encoder
 ### Round 1: using negative pairs of sentence generated from BM25
-For each Masked Language Model, we trained a sentence transformer corresponding to it
+For each Masked Language Model, trained a sentence transformer corresponding to it
 Run the following command to train round 1 of sentence bert model
 
 Note: Use cls_pooling for condenser and cocodenser
@@ -196,7 +196,7 @@ python hard_negative_mining.py \
     --save_path /path/to/directory/to/save/neg/pairs\
     --top_k top_k_negative_pair
 ```
-Here we pick top k is 20 .
+Pick top k is 20 .
 - Use the data generated from step 1 to train round 2 of sentence bert model for each model from round 1:
 To train round 2, please use the following command:
 ```
@@ -211,4 +211,34 @@ python train_sentence_bert.py
     --batch_size 32\
 ```
 Tips: Use small learning rate for model convergence
+
+## Finetune BGE
+'''
+ CUDA_VISIBLE_DEVICES=0 torchrun --nproc_per_node 1 -m FlagEmbedding.BGE_M3.run \
+    --output_dir /home/gemai/md1/NAMNT_DA2/checkpoint/ckp_bge_round2 \
+    --model_name_or_path /home/gemai/md1/NAMNT_DA2/checkpoint/ckp_bge/checkpoint-20000 \
+    --train_data /home/gemai/md1/NAMNT_DA2/data_train_bge/bge_data_minedHN.json \
+    --learning_rate 1e-5 \
+    --fp16 \
+    --num_train_epochs 20 \
+    --per_device_train_batch_size 2 \
+    --dataloader_drop_last True \
+    --normlized True \
+    --temperature 0.02 \
+    --query_max_len 128 \
+    --passage_max_len 256 \
+    --train_group_size 2 \
+    --negatives_cross_device \
+    --logging_steps 250 \
+    --same_task_within_batch True \
+    --unified_finetuning True \
+    --use_self_distill True \
+    --save_steps 500 \
+    --query_instruction_for_retrieval ""
+'''
+
+## Run Streamlit
+'''
+streamlit run generate_question/test_streamlit.py
+'''
 
